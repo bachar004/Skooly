@@ -1,0 +1,49 @@
+<div class="container-fluid coin px-3 py-3">
+    <button type="button" class="btn btn-warning b1" data-bs-toggle="modal" data-bs-target="#ajouter_class">Ajouter</button>
+</div>
+<div class="container-fluid">
+    <div class="container-fluid mt-3 mb-5">
+        <p style="color: rgb(255, 181, 43); font-size: 26px; margin-left: 15px;"> Classes :</p>
+    </div>
+    <div class="row">
+        <div class="col-4 col-lg-3 " *ngFor='let i of tab'>
+            <div [ngClass]="{'classe1':i.niveau==='L1','classe2':i.niveau==='L2','classe3':i.niveau==='L3'}" class="container-fluid mb-4" (click)='voirclasse(i.id_classe)'>
+                <p class="pclass">{{i.class}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal bch tzid classe -->
+<div class="modal fade" id="ajouter_class" tabindex="-1" aria-labelledby="ajouter_classLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ajouter_classLabel">Ajouter une classe</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="ajoutclass()"#formid="ngForm" >
+          <div class="mb-3">
+            <label class="form-label">Nom de la classe</label>
+            <input type="text" class="form-control" required name="nom" [(ngModel)]="object.nom">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Niveau</label>
+            <select class="form-select" required name="niv" [(ngModel)]="object.niv">
+              <option value="" disabled selected hidden >Sélectionner un niveau</option>
+              <option [value]="i.niveau" *ngFor="let i of niveau">{{i.niveau}}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Specialité</label>
+            <select class="form-select" required name="spec" [(ngModel)]="object.spec">
+              <option value="" disabled selected hidden>Sélectionner une Specialité</option>
+              <option [value]="i.specialite" *ngFor="let i of specialite" >{{i.specialite}}</option>
+            </select>
+          </div>
+          <button type="submit" [disabled]="!formid.valid" class="btn btn-success w-100">Enregistrer</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

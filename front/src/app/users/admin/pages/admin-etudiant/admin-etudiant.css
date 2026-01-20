@@ -1,0 +1,65 @@
+.act{
+font-size: 20px;
+box-shadow: 5px 5px 5px #d9d9d9;
+}
+.p1{
+    color: #afafaf;
+    font-size: 25px;
+}
+.coin{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.coin .b1{
+    color:white;
+    background-color: #FFA500;
+    padding: 8px 20px ;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.coin .b1:hover{
+    background-color: #ffbd43;
+}
+.classe1{
+    box-shadow: 5px 5px 5px 1px #d9d9d9;
+    background-color: #d8f1ff;
+    border-radius: 10px;
+    padding: 5px 0px ;
+    width: 90%;
+    cursor:pointer;
+    transition: 0.5s;
+}
+.classe1:hover{
+    transform: scale(1.02); 
+    background-color: #effdff;
+}
+.classe2{
+    box-shadow: 5px 5px 5px 1px #d9d9d9;
+    background-color: #ccfacb;
+    border-radius: 10px;
+    padding: 5px 0px ;
+    width: 90%;
+    cursor:pointer;
+    transition: 0.5s;
+}
+.classe2:hover{
+    transform: scale(1.02); 
+    background-color: #e2fce2;
+}.classe3{
+    box-shadow: 5px 5px 5px 1px #d9d9d9;
+    background-color: #ffd69f;
+    border-radius: 10px;
+    padding: 5px 0px ;
+    width: 90%;
+    cursor:pointer;
+    transition: 0.5s;
+}
+.classe3:hover{
+    transform: scale(1.02); 
+    background-color: #ffe3c0;
+}
+.pclass{
+    margin: 0;
+    font-size: 18px;
+    padding: 10px 0px 10px 15px;
+}

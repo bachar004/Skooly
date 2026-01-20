@@ -1,0 +1,65 @@
+<div class="d-md-flex d-flex-column">
+    <app-etudiant-sidebar></app-etudiant-sidebar>
+    <div class="row w-100 m-0 mt-3">
+        <div class="col p-0">
+            <div class="d-flex act p-0 py-3 ps-4 align-items-center">
+                <p class="p1 ps-3">Skooly / </p>
+                <p>Notes</p>
+            </div>
+            <div class="container-fluid px-5 py-4">
+               <div class="container-fluid px-5 py-4">
+        <div *ngIf="loading" class="text-center py-5">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Chargement...</span>
+          </div>
+        </div>
+
+        <div *ngIf="!loading">
+
+          <!-- Tableau notes -->
+          <div class="card">
+            <div class="card-header">
+              <h5 class="mb-0">Mes notes par matière</h5>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                  <thead class="table-light">
+                    <tr>
+                      <th>Matière</th>
+                      <th>Coeff.</th>
+                      <th>DS</th>
+                      <th>Examen</th>
+                      <th>Moyenne</th>
+                      <th>Semestre</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let note of notes">
+                      <td>
+                        <strong>{{note.nom_matiere}}</strong>
+                      </td>
+                      <td>{{note.coefficient}}</td>
+                      <td>{{note.note_ds || '-'}}</td>
+                      <td>{{note.note_examen || '-'}}</td>
+                      <td class="fw-bold">
+                        <span [class]="note.moyenne >= 10 ? 'text-success' : 'text-danger'">
+                          {{note.moyenne | number:'1.2-2'}}
+                        </span>
+                      </td>
+                      <td>{{note.semestre}}</td>
+                    </tr>
+                    <tr *ngIf="notes.length === 0">
+                      <td colspan="6" class="text-center py-5 text-muted">
+                        <i class="bi bi-clipboard-data fs-1 mb-3"></i>
+                        <p>Aucune note disponible</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+<div class="d-md-flex d-flex-column">
+    <app-etudiant-sidebar></app-etudiant-sidebar>
+    <div class="row w-100 m-0 mt-3">
+        <div class="col p-0">
+            <div class="d-flex act p-0 py-3 ps-4 align-items-center">
+                <p class="p1 ps-3">Skooly / </p>
+                <p>Acceuil</p>
+            </div>
+            <div class="container-fluid px-5 py-4">
+                <h5 class="text-dark">Carte Etudiant :</h5>
+                <div class="container d-flex justify-content-center mt-5">
+                    <div class="card shadow-lg" style="width: 500px; border-radius: 20px;">
+                        <div class="card-header text-white d-flex align-items-center justify-content-between" style="background:#328b2b; border-radius: 20px 20px 0 0;">
+                            <h4 class="mb-0">Carte Étudiant</h4>
+                            <img src="images/skooly b 2.png" alt="Logo" width="60" class="me-3">
+                        </div>
+                        <div class="card-body px-5 py-4">
+
+                            <div class="row mb-3">
+                                <div class="col-lg-4 d-flex justify-content-center align-items-center">
+                                    <img src="images/Ellipse 5.png" alt="Photo" class="rounded-circle border me-4" width="130" height="130">
+                                </div>
+                                <div class="col-lg-8 text-start mt-3">
+                                    <p class="mb-1"><strong>Nom :</strong> {{etudiant.prenom}}</p>
+                                    <p class="mb-1"><strong>Prenom :</strong> {{etudiant.nom}}</p>
+                                    <p class="mb-1"><strong>Date naissance :</strong> {{etudiant.date_naissance | date:'yyyy-MM-dd'}}</p>
+                                    <p class="mb-1"><strong>Classe :</strong> {{etudiant.nom_classe}} </p>
+                                    <p class="mb-1"><strong>Année scolaire :</strong> {{etudiant.annee_scolaire}} </p>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="d-flex justify-content-between px-2">
+                                <small class="text-muted">ID : 58962885</small>
+                                <small class="text-muted">Établissement Skooly</small>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <h5 class="text-dark">Emploi du temps :</h5>
+                <div class="container mt-5">
+                    <table class="table table-bordered table-striped text-center">
+                        <thead class="table-success">
+                            <tr>
+                                <th>Jour</th>
+                                <th>08:00 - 10:00</th>
+                                <th>10:15 - 12:15</th>
+                                <th>13:30 - 15:30</th>
+                                <th>15:45 - 17:45</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-Secondary">
+                                <tr *ngFor="let jour of ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi']">
+                                    <td>{{jour}}</td>
+                                    <td><strong style="font-weight:bold;">{{sceance(jour,'08:00:00')?.nom_matiere}}</strong><br>
+                                    <small>{{sceance(jour,'08:00:00')?.salle}}--</small>
+                                    <small>{{sceance(jour,'08:00:00')?.prof}}</small>
+                                    </td>
+
+                                    <td><strong style="font-weight:bold;">{{sceance(jour,'10:15:00')?.nom_matiere}}</strong><br>
+                                    <small>{{sceance(jour,'10:15:00')?.salle}}--</small>
+                                    <small>{{sceance(jour,'10:15:00')?.prof}}</small>
+                                    </td>
+                                    <td><strong style="font-weight:bold;">{{sceance(jour,'13:30:00')?.nom_matiere}}</strong><br>
+                                    <small>{{sceance(jour,'13:30:00')?.salle}}--</small>
+                                    <small>{{sceance(jour,'13:30:00')?.prof}}</small>
+                                    </td>
+                                    <td><strong style="font-weight:bold;">{{sceance(jour,'15:45:00')?.nom_matiere}}</strong><br>
+                                    <small>{{sceance(jour,'15:45:00')?.salle}}--</small>
+                                    <small>{{sceance(jour,'15:45:00')?.prof}}</small>
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

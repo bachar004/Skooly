@@ -1,0 +1,21 @@
+.zone{
+border: none;
+outline: none;
+border-radius:0%;
+padding: 12px;
+box-shadow: none;
+border-bottom: solid 1px;
+font-size: 16px;
+background-color: #2E8BC0;
+color: white;
+}
+.b{
+    padding: 11px 17px;
+}
+.b:hover{
+    transform: scale(1.03);
+}
+.bgcl{
+    background-color: #2E8BC0;
+    min-height: 100vh;
+}

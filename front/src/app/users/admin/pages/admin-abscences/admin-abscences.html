@@ -1,0 +1,114 @@
+<div class="d-md-flex d-flex-column">
+    <app-admin-sidebar></app-admin-sidebar>
+    <div class="row w-100 m-0 mt-3">
+        <div class="col p-0">
+            <div class="d-flex act p-0 py-3 ps-4 align-items-center">
+                <p class="p1 ps-3">Skooly / </p>
+                <p>Abscences</p>
+            </div> 
+            <div class="container mt-5">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Absences du {{selectedDate || 'Aujourd\'hui'}}</h2>
+        <div class="stats-summary d-flex gap-3">
+          <div class="stat-box text-center p-3 bg-primary text-white rounded-3">
+            <div class="fs-3 fw-bold">{{getTotalAbsences()}}</div>
+            <small>Absences totales</small>
+          </div>
+          <div class="stat-box text-center p-3 bg-success text-white rounded-3">
+            <div class="fs-3 fw-bold">{{getClassesWithAbsences()}}</div>
+            <small>Classes concernées</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtres -->
+      <div class="filters row align-items-end g-3 mb-4">
+        <div class="col-md-3">
+          <label class="form-label">Date</label>
+          <input type="date" 
+                 [(ngModel)]="selectedDate" 
+                 (change)="onDateChange()"
+                 class="form-control">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Classe</label>
+          <select [(ngModel)]="selectedClasseId" 
+                  (change)="onClasseChange()"
+                  class="form-select">
+            <option [ngValue]="null">Toutes les classes ({{classes.length}})</option>
+            <option *ngFor="let classe of classes" [ngValue]="classe.id_classe">
+              {{classe.nom_classe}} ({{classe.total_absences}} abs.)
+            </option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-outline-primary" (click)="loadClassesAbsences()">
+            <i class="bi bi-arrow-clockwise"></i> Actualiser
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;"></div>
+        <p class="mt-3">Chargement des absences...</p>
+      </div>
+
+      <!-- Résultats -->
+      <div *ngIf="!loading">
+        <div *ngFor="let classe of getFilteredClasses()" class="card mb-4 shadow-sm">
+          <div class="card-header d-flex justify-content-between align-items-center bg-light">
+            <h5 class="mb-0">
+              {{classe.nom_classe}} 
+              <small class="text-muted">({{classe.niveau}})</small>
+            </h5>
+            <span class="badge fs-6 px-3 py-2" 
+                  [ngClass]="{'bg-danger': classe.total_absences > 0, 'bg-success': classe.total_absences === 0}">
+              {{classe.total_absences}} absence(s)
+            </span>
+          </div>
+          
+          <div class="card-body">
+            <!-- Pas d'absences -->
+            <div *ngIf="classe.absences.length === 0" class="text-center text-muted py-4">
+              <i class="bi bi-check-circle-fill fs-1 opacity-50 mb-3 d-block"></i>
+              <h6>Aucune absence enregistrée</h6>
+            </div>
+            
+            <!-- Liste des absences -->
+            <div *ngFor="let absence of classe.absences; let i = index" 
+                 class="absence-row p-3 border-bottom" 
+                 [class.last-row]="i === classe.absences.length - 1">
+              <div class="row align-items-center g-3">
+                <div class="col-md-3">
+                  <strong>{{absence.prenom}} {{absence.nom}}</strong>
+                </div>
+                <div class="col-md-2">
+                  <small class="text-muted d-block">{{absence.date_absence}}</small>
+                  {{absence.heure}}
+                </div>
+                <div class="col-md-3">
+                  <span class="badge bg-secondary">{{absence.motif}}</span>
+                </div>
+                <div class="col-md-2">
+                  <span class="badge px-3 py-2" 
+                        [ngClass]="{'bg-success': absence.justifiee, 'bg-warning text-dark': !absence.justifiee}">
+                    {{absence.justifiee ? 'Justifiée' : 'Non justifiée'}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aucune classe -->
+        <div *ngIf="getFilteredClasses().length === 0 && !loading" class="alert alert-info text-center">
+          <i class="bi bi-calendar-x fs-1 mb-3 d-block"></i>
+          <h5>Aucune classe trouvée</h5>
+          <p>Vérifiez vos filtres de date et de classe</p>
+        </div>
+      </div>
+    </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,386 @@
+<div class="d-md-flex d-flex-column">
+    <app-profsidebar></app-profsidebar>
+    <div class="row w-100 m-0 mt-3">
+        <div class="col p-0">
+            <div class="d-flex act p-0 py-3 ps-4 align-items-center">
+                <p class="p1 ps-3">Skooly / </p>
+                <p>cours</p>
+            </div>
+            <div class="container py-4">
+  <!-- En-tête -->
+  <div class="row mb-4">
+    <div class="col-12">
+      <h2 class="mb-0">
+        <i class="fas fa-book-open text-primary"></i> Mes Cours
+      </h2>
+      <p class="text-muted">Gérez vos cours et documents pédagogiques</p>
+    </div>
+  </div>
+
+  <!-- Messages -->
+  <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show">
+    <i class="fas fa-check-circle"></i> {{ successMessage }}
+    <button type="button" class="btn-close" (click)="successMessage = ''"></button>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show">
+    <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+    <button type="button" class="btn-close" (click)="errorMessage = ''"></button>
+  </div>
+
+  <div class="row">
+    <!-- Sidebar - Matières -->
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0"><i class="fas fa-list"></i> Mes Matières</h5>
+        </div>
+        <div class="list-group list-group-flush">
+          <button *ngFor="let matiere of matieres"
+                  class="list-group-item list-group-item-action"
+                  [class.active]="selectedMatiere?.id_matiere === matiere.id_matiere"
+                  (click)="selectMatiere(matiere)">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <strong>{{ matiere.nom_matiere }}</strong>
+                <small class="d-block text-muted">
+                  {{ matiere.nom_classe }} - {{ matiere.niveau }}
+                </small>
+              </div>
+              <span class="badge bg-secondary">{{ matiere.semestre }}</span>
+            </div>
+          </button>
+          
+          <div *ngIf="matieres.length === 0" class="list-group-item text-muted text-center">
+            Aucune matière assignée
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="col-md-9">
+      <!-- Liste des cours -->
+      <div *ngIf="selectedMatiere && !selectedCours" class="card shadow-sm">
+        <div class="card-header bg-success text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="fas fa-book"></i> 
+              Cours - {{ selectedMatiere.nom_matiere }}
+            </h5>
+            <button class="btn btn-light btn-sm" (click)="openCoursModal()">
+              <i class="fas fa-plus"></i> Nouveau Cours
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Loader -->
+          <div *ngIf="loading" class="text-center py-5">
+            <div class="spinner-border text-primary"></div>
+          </div>
+
+          <!-- Liste des cours -->
+          <div *ngIf="!loading && cours.length > 0" class="row">
+            <div *ngFor="let c of cours" class="col-md-6 mb-3">
+              <div class="card h-100 border-0 shadow-sm hover-shadow">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="card-title mb-0">{{ c.titre }}</h5>
+                    <span class="badge" 
+                          [ngClass]="{
+                            'bg-success': c.statut === 'publié',
+                            'bg-warning': c.statut === 'brouillon',
+                            'bg-secondary': c.statut === 'archivé'
+                          }">
+                      {{ c.statut }}
+                    </span>
+                  </div>
+                  
+                  <p class="card-text text-muted small">
+                    {{ c.description || 'Aucune description' }}
+                  </p>
+                  
+                  <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">
+                      <i class="fas fa-paperclip"></i> 
+                      {{ c.nb_documents || 0 }} document(s)
+                    </small>
+                    <small class="text-muted">
+                      {{ c.date_creation | date:'dd/MM/yyyy' }}
+                    </small>
+                  </div>
+                  
+                  <div class="mt-3">
+                    <button class="btn btn-sm btn-primary me-1" 
+                            (click)="viewCours(c)"
+                            title="Voir les détails">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-info me-1" 
+                            (click)="openUploadModal(c)"
+                            title="Ajouter des documents">
+                      <i class="fas fa-upload"></i>
+                    </button>
+                    <button class="btn btn-sm btn-warning me-1" 
+                            (click)="openCoursModal(c)"
+                            title="Modifier">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" 
+                            (click)="deleteCours(c.id_cours)"
+                            title="Supprimer">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Message si aucun cours -->
+          <div *ngIf="!loading && cours.length === 0" class="text-center py-5">
+            <i class="fas fa-book fa-3x text-muted mb-3"></i>
+            <p class="text-muted">Aucun cours pour cette matière</p>
+            <button class="btn btn-primary" (click)="openCoursModal()">
+              <i class="fas fa-plus"></i> Créer le premier cours
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Détails du cours -->
+      <div *ngIf="selectedCours" class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              <i class="fas fa-book-reader"></i> {{ selectedCours.titre }}
+            </h5>
+            <button class="btn btn-light btn-sm" (click)="selectedCours = null">
+              <i class="fas fa-arrow-left"></i> Retour
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="mb-4">
+            <h6>Description :</h6>
+            <p class="text-muted">
+              {{ selectedCours.description || 'Aucune description' }}
+            </p>
+            
+            <div class="d-flex gap-2 mb-3">
+              <button class="btn btn-success btn-sm" 
+                      (click)="openUploadModal(selectedCours)">
+                <i class="fas fa-upload"></i> Ajouter des documents
+              </button>
+              <button class="btn btn-warning btn-sm" 
+                      (click)="openCoursModal(selectedCours)">
+                <i class="fas fa-edit"></i> Modifier le cours
+              </button>
+            </div>
+          </div>
+
+          <h6 class="mb-3">
+            <i class="fas fa-paperclip"></i> 
+            Documents ({{ documents.length }})
+          </h6>
+
+          <!-- Liste des documents -->
+          <div *ngIf="documents.length > 0" class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Fichier</th>
+                  <th>Type</th>
+                  <th>Taille</th>
+                  <th>Date</th>
+                  <th>Téléchargements</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let doc of documents">
+                  <td>
+                    <i class="fas" [ngClass]="getFileIcon(doc.type_fichier)"></i>
+                    {{ doc.nom_original }}
+                  </td>
+                  <td>
+                    <small class="text-muted">
+                      {{ doc.type_fichier.split('/')[1]?.toUpperCase() }}
+                    </small>
+                  </td>
+                  <td>{{ formatFileSize(doc.taille_fichier) }}</td>
+                  <td>{{ doc.date_upload | date:'dd/MM/yyyy HH:mm' }}</td>
+                  <td>
+                    <span class="badge bg-info">
+                      {{ doc.telecharge_count }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-primary me-1"
+                            (click)="downloadDocument(doc.id_document)"
+                            title="Télécharger">
+                      <i class="fas fa-download"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger"
+                            (click)="deleteDocument(doc.id_document)"
+                            title="Supprimer">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div *ngIf="documents.length === 0" class="alert alert-info text-center">
+            <i class="fas fa-info-circle"></i> 
+            Aucun document pour ce cours
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Création/Édition Cours -->
+<div class="modal fade" [class.show]="showCoursModal" 
+     [style.display]="showCoursModal ? 'block' : 'none'"
+     tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-book"></i> 
+          {{ coursForm.id_cours ? 'Modifier le cours' : 'Nouveau cours' }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" 
+                (click)="closeCoursModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label class="form-label">Titre *</label>
+            <input type="text" 
+                   class="form-control" 
+                   [(ngModel)]="coursForm.titre"
+                   name="titre"
+                   required
+                   placeholder="Ex: Introduction aux algorithmes">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" 
+                      rows="4"
+                      [(ngModel)]="coursForm.description"
+                      name="description"
+                      placeholder="Décrivez le contenu du cours..."></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Statut</label>
+              <select class="form-select" 
+                      [(ngModel)]="coursForm.statut"
+                      name="statut">
+                <option value="brouillon">Brouillon</option>
+                <option value="publié">Publié</option>
+                <option value="archivé">Archivé</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Ordre d'affichage</label>
+              <input type="number" 
+                     class="form-control" 
+                     [(ngModel)]="coursForm.ordre"
+                     name="ordre"
+                     min="0">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" 
+                (click)="closeCoursModal()">
+          Annuler
+        </button>
+        <button type="button" class="btn btn-primary" 
+                (click)="saveCours()">
+          <i class="fas fa-save"></i> Enregistrer
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Upload Documents -->
+<div class="modal fade" [class.show]="showUploadModal" 
+     [style.display]="showUploadModal ? 'block' : 'none'"
+     tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title">
+          <i class="fas fa-upload"></i> Ajouter des documents
+        </h5>
+        <button type="button" class="btn-close btn-close-white" 
+                (click)="showUploadModal = false"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Sélectionner des fichiers</label>
+          <input type="file" 
+                 class="form-control" 
+                 multiple
+                 (change)="onFileSelected($event)"
+                 accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.mp4,.zip">
+          <small class="text-muted">
+            Formats acceptés: PDF, Word, PowerPoint, Excel, Images, Vidéos, Archives (Max 50MB)
+          </small>
+        </div>
+
+        <!-- Liste des fichiers sélectionnés -->
+        <div *ngIf="selectedFiles.length > 0" class="mb-3">
+          <strong>Fichiers sélectionnés :</strong>
+          <ul class="list-group mt-2">
+            <li *ngFor="let file of selectedFiles" class="list-group-item">
+              <i class="fas fa-file"></i> 
+              {{ file.name }} 
+              <small class="text-muted">({{ formatFileSize(file.size) }})</small>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Barre de progression -->
+        <div *ngIf="isUploading" class="progress">
+          <div class="progress-bar progress-bar-striped progress-bar-animated" 
+               [style.width.%]="uploadProgress">
+            {{ uploadProgress }}%
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" 
+                (click)="showUploadModal = false"
+                [disabled]="isUploading">
+          Annuler
+        </button>
+        <button type="button" class="btn btn-success" 
+                (click)="uploadFiles()"
+                [disabled]="selectedFiles.length === 0 || isUploading">
+          <i class="fas fa-upload"></i> Uploader
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Backdrop pour les modals -->
+<div class="modal-backdrop fade" 
+     [class.show]="showCoursModal || showUploadModal"
+     *ngIf="showCoursModal || showUploadModal">
+</div>
+        </div>
+    </div>
+</div>

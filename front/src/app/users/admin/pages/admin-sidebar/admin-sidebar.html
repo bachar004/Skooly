@@ -1,0 +1,112 @@
+<div class="d-flex align-items-center justify-content-between d-md-none p-3 border-bottom">
+  <img src="images/skooly 3.png" alt="Logo" class="img-fluid" style="width: 80px;">
+  <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMobile" aria-controls="sidebarMobile">☰</button>
+</div>
+
+
+<div class="d-none d-md-flex flex-column par h-100">
+  <img class="img-fluid m-5 pt-2 p-5 pb-2" src="images/skooly 3.png" alt="Logo">
+  <ul class="nav flex-column">
+    <li class="nav-item mb-3 mt-5">
+      <a class="nav-link d-flex align-items-center ps-4 py-3" routerLink="/admin/acceuil" routerLinkActive="active">
+        <img *ngIf=" rout.url!=='/admin/acceuil' " class="img-fluid me-2" src="images/accueil (3).png" alt="Home" style="width:35px">
+        <img *ngIf=" rout.url==='/admin/acceuil'  " class="img-fluid me-2" src="images/accueil (1).png" alt="Home" style="width:35px">
+        Accueil
+      </a>
+    </li>
+
+      <li class="nav-item mb-3">
+        <a class="nav-link d-flex align-items-center ps-4 py-3" routerLink="/admin/etudiant" routerLinkActive="active">
+        <img *ngIf=" !rout.url.startsWith('/admin/etudiant') " class="img-fluid me-2" src="images/etudiant-diplome (1).png" alt="Etudiant" style="width:35px">
+        <img *ngIf=" rout.url.startsWith('/admin/etudiant')" class="img-fluid me-2" src="images/etudiant-diplome.png" alt="Etudiant" style="width:35px">
+            Etudiant
+        </a>
+      </li>
+          <li class="nav-item mb-3">
+        <a class="nav-link d-flex align-items-center ps-4 py-3" routerLink="/admin/prof" routerLinkActive="active">
+        <img *ngIf=" rout.url!=='/admin/prof'  " class="img-fluid me-2" src="images/professeur.png" alt="Prof" style="width:35px">
+        <img *ngIf=" rout.url==='/admin/prof'  " class="img-fluid me-2" src="images/professeur (1).png" alt="Prof" style="width:35px">
+            Prof
+        </a>
+      </li>
+
+    <li class="nav-item mb-3">
+      <a class="nav-link d-flex align-items-center ps-4 py-3" routerLink="/admin/notes" routerLinkActive="active">
+        <img *ngIf=" rout.url!=='/admin/notes'  "  class="img-fluid me-2" src="images/ecole (1).png" alt="Notes" style="width:35px">
+        <img *ngIf=" rout.url==='/admin/notes'  "  class="img-fluid me-2" src="images/ecole (3).png" alt="Notes" style="width:35px">
+        Notes
+      </a>
+    </li>
+
+    <li class="nav-item mb-3">
+      <a class="nav-link d-flex align-items-center ps-4 py-3" routerLink="/admin/abscences" routerLinkActive="active">
+        <img *ngIf=" rout.url!=='/admin/abscences'  " class="img-fluid me-2" src="images/absence (4).png" alt="Absences" style="width:35px">
+        <img *ngIf=" rout.url==='/admin/abscences'  " class="img-fluid me-2" src="images/Group 1171275004.png" alt="Absences" style="width:35px">
+        Absences
+      </a>
+    </li>
+
+    <li class="nav-item mb-3">
+      <a class="nav-link d-flex align-items-center ps-4 py-3" (click)="redirect()">
+        <img class="img-fluid me-2" src="images/se-deconnecter (6).png" alt="Déconnexion" style="width:35px">
+        Déconnexion
+      </a>
+    </li>
+  </ul>
+</div>
+
+
+
+<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="sidebarMobile" aria-labelledby="sidebarMobileLabel">
+  <div class="offcanvas-header d-flex justify-content-between">
+    <img class="offcanvas-title ps-3" id="sidebarMobileLabel" src="images/skooly 3.png" style="width:80px">
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body p-0">
+    <ul class="nav flex-column">
+      <li class="nav-item mb-3">
+        <a class="nav-link ps-4 py-3 d-flex align-items-center" routerLink="/admin/acceuil" routerLinkActive="active">
+        <img *ngIf=" rout.url!=='/admin/acceuil' " class="img-fluid me-2" src="images/accueil (3).png" alt="Home" style="width:35px">
+        <img *ngIf=" rout.url==='/admin/acceuil'  " class="img-fluid me-2" src="images/accueil (1).png" alt="Home" style="width:35px">
+          Accueil
+        </a>
+      </li>
+      <li class="nav-item mb-3">
+        <a class="nav-link d-flex align-items-center ps-4 py-3" routerLink="/admin/etudiant" routerLinkActive="active">
+        <img *ngIf=" rout.url!=='/admin/etudiant'  " class="img-fluid me-2" src="images/etudiant-diplome (1).png" alt="Etudiant" style="width:35px">
+        <img *ngIf=" rout.url==='/admin/etudiant'  " class="img-fluid me-2" src="images/etudiant-diplome.png" alt="Etudiant" style="width:35px">
+            Etudiant
+        </a>
+      </li>
+          <li class="nav-item mb-3">
+        <a class="nav-link d-flex align-items-center ps-4 py-3" routerLink="/admin/prof" routerLinkActive="active">
+        <img *ngIf=" rout.url!=='/admin/prof'  " class="img-fluid me-2" src="images/professeur.png" alt="Prof" style="width:35px">
+        <img *ngIf=" rout.url==='/admin/prof'  " class="img-fluid me-2" src="images/professeur (1).png" alt="Prof" style="width:35px">
+            Prof
+        </a>
+      </li>
+    <li class="nav-item mb-3">
+      <a class="nav-link d-flex align-items-center ps-4 py-3" routerLink="/admin/notes" routerLinkActive="active">
+        <img *ngIf=" rout.url!=='/admin/notes'  "  class="img-fluid me-2" src="images/ecole (1).png" alt="Notes" style="width:35px">
+        <img *ngIf=" rout.url==='/admin/notes'  "  class="img-fluid me-2" src="images/ecole (3).png" alt="Notes" style="width:35px">
+        Notes
+      </a>
+    </li>
+
+    <li class="nav-item mb-3">
+      <a class="nav-link d-flex align-items-center ps-4 py-3" routerLink="/admin/abscences" routerLinkActive="active">
+        <img *ngIf=" rout.url!=='/admin/abscences'  " class="img-fluid me-2" src="images/absence (4).png" alt="Absences" style="width:35px">
+        <img *ngIf=" rout.url==='/admin/abscences'  " class="img-fluid me-2" src="images/Group 1171275004.png" alt="Absences" style="width:35px">
+        Absences
+      </a>
+    </li>
+
+    <li class="nav-item mb-3">
+      <a class="nav-link d-flex align-items-center ps-4 py-3" (click)="redirect()">
+        <img class="img-fluid me-2" src="images/se-deconnecter (6).png" alt="Déconnexion" style="width:24px">
+        Déconnexion
+      </a>
+    </li>
+    </ul>
+  </div>
+</div>

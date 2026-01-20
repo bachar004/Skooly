@@ -1,0 +1,14 @@
+.coin{
+    display: flex;
+    flex-direction: row-reverse;
+}
+.coin .b1{
+    color:white;
+    background-color: #FFA500;
+    padding: 8px 20px ;
+    font-size: 18px;
+    font-family: 'Times New Roman', Times, serif;
+}
+.coin .b1:hover{
+    background-color: #ffbd43;
+}

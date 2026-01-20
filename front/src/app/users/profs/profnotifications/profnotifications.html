@@ -1,0 +1,101 @@
+<div class="d-md-flex d-flex-column">
+    <app-profsidebar></app-profsidebar>
+    <div class="row w-100 m-0 mt-3">
+        <div class="col p-0">
+            <div class="d-flex act p-0 py-3 ps-4 align-items-center">
+                <p class="p1 ps-3">Skooly / </p>
+                <p>Notifications</p>
+            </div>
+            <div class="container-fluid px-5 py-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-bell me-2"></i>Notifications</h2>
+    <button class="btn btn-primary" (click)="showForm = !showForm">
+      <i class="bi bi-plus-circle"></i> Nouvelle notification
+    </button>
+  </div>
+
+  <!-- Formulaire envoi -->
+  <div class="card mb-4" *ngIf="showForm">
+    <div class="card-body">
+      <h5>Envoyer une notification</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <label>Titre</label>
+          <input type="text" class="form-control" [(ngModel)]="titre" placeholder="ex: Contrôle demain">
+        </div>
+        <div class="col-md-6">
+          <label>Type</label>
+          <select class="form-select" [(ngModel)]="type">
+            <option value="info">Info</option>
+            <option value="success">Succès</option>
+            <option value="warning">Attention</option>
+            <option value="error">Urgent</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-3 mt-3">
+        <label>Message</label>
+        <textarea class="form-control" rows="3" [(ngModel)]="message" placeholder="Détails..."></textarea>
+      </div>
+      <div class="mb-3">
+        <label>Mes classes ({{classesSelectionnees.length}} sélectionnée(s))</label>
+        <div class="row">
+          <div class="col-md-4" *ngFor="let classe of classes">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" 
+                     [id]="'classe-'+classe.id_classe"
+                     [checked]="estSelectionnee(classe.id_classe)"
+                     (change)="toggleClasse(classe.id_classe)">
+              <label [for]="'classe-'+classe.id_classe" class="form-check-label">
+                {{classe.nom_classe}}
+                <span *ngIf="classe.notifications_non_lues > 0" class="badge bg-danger ms-1">
+                  {{classe.notifications_non_lues}}
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-success" (click)="envoyerNotification()" [disabled]="envoiLoading">
+        <i class="bi bi-send"></i> Envoyer à {{classesSelectionnees.length}} classe(s)
+      </button>
+    </div>
+  </div>
+
+  <!-- Liste notifications -->
+  <div class="card">
+    <div class="card-header d-flex justify-content-between">
+      <h6>Mes notifications <span class="badge bg-primary">{{notifications.length}}</span></h6>
+      <select class="form-select form-select-sm" (change)="onFilterChange($event)">
+        <option value="toutes">Toutes</option>
+        <option value="non_lues">Non lues</option>
+      </select>
+    </div>
+    <div class="list-group list-group-flush" *ngIf="notifications.length > 0; else vide">
+      <div class="list-group-item" *ngFor="let notif of notifications">
+        <div class="d-flex w-100 justify-content-between">
+          <h6 class="mb-1" [ngClass]="getTypeClass(notif.type) + ' badge px-3 py-2 me-3'">
+            {{notif.titre}}
+          </h6>
+          <small *ngIf="!notif.lu" class="text-danger">• Nouveau</small>
+        </div>
+        <p class="mb-2">{{notif.message}}</p>
+        <small class="text-muted">
+          {{notif.classes_noms}} • {{notif.date_creation | date:'short'}}
+        </small>
+        <button *ngIf="!notif.lu" class="btn btn-sm btn-outline-primary ms-2 float-end" (click)="marquerLu(notif)">
+          Marquer lu
+        </button>
+      </div>
+    </div>
+    <ng-template #vide>
+      <div class="text-center py-5 text-muted">
+        <i class="bi bi-bell-slash fs-1 mb-3"></i>
+        <p>Aucune notification</p>
+      </div>
+    </ng-template>
+  </div>
+            </div>
+        </div>
+    </div>
+</div>

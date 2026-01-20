@@ -1,0 +1,43 @@
+<div class="d-md-flex d-flex-column">
+    <app-admin-sidebar></app-admin-sidebar>
+    <div class="row w-100 m-0 mt-3">
+        <div class="col p-0">
+            <div class="d-flex act p-0 py-3 ps-4 align-items-center">
+                <p class="p1 ps-3">Skooly / </p>
+                <p>Acceuil</p>
+            </div> 
+            <div class="container-fluid px-5 py-4">
+                <p style="color: rgb(255, 181, 43); font-size: 26px;">Vue d'ensemble :</p>
+                <div class="container">
+                    <div class="row justify-content-center mt-5 ">
+                        <div class="col-3 contenu text-center pt-2 mx-3 mb-5">
+                            <p style="font-weight: bold;">Etudiants</p>
+                            <p *ngIf="stats">{{stats.nbetudiants}}</p>
+                            <p *ngIf="!stats">...</p>
+                        </div>
+                        <div class="col-3 contenu text-center pt-2 mx-3 mb-5">
+                            <p style="font-weight: bold;">Profs</p>
+                            <p *ngIf="stats">{{stats.nbprofs}}</p>
+                            <p *ngIf="!stats">...</p>
+                        </div>
+                        <div class="col-3 contenu text-center pt-2 mx-3 mb-5">
+                            <p style="font-weight: bold;">Classes</p>
+                            <p *ngIf="stats">{{stats.nbclasses}}</p>
+                            <p *ngIf="!stats">...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="container box mt-5">
+                    <div class="row justify-content-center align-items-center">
+                        <div class="col-6">
+                            <p style="font-size: 22px;font-weight: bold; color: #1F3C88;text-align: center;">Répartition des étudiants selon leurs niveaux d'études</p>
+                        </div>
+                        <div class="col colcanva">
+                                <canvas baseChart [data]="chartData" [type]="chartType" [options]="chartOptions"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

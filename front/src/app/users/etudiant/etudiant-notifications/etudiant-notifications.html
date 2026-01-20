@@ -1,0 +1,65 @@
+<div class="d-md-flex d-flex-column">
+  <app-etudiant-sidebar></app-etudiant-sidebar>
+
+  <div class="row w-100 m-0 mt-3">
+    <div class="col p-0">
+
+      <div class="d-flex act p-0 py-3 ps-4 align-items-center">
+        <p class="p1 ps-3">Skooly / </p>
+        <p>Notifications</p>
+      </div>
+
+      <div class="container-fluid px-5 py-4">
+
+        <!-- Bouton + badge -->
+        <div class="d-flex justify-content-end mb-3">
+          <button class="btn btn-primary position-relative" (click)="toggleNotifications()">
+            <i class="bi bi-bell">Cacher</i>
+            <span *ngIf="nbNonLues > 0"
+                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+              {{nbNonLues}}
+            </span>
+          </button>
+        </div>
+
+        <!-- Panneau notifications -->
+        <div class="card" *ngIf="showNotifications">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h6 class="mb-0">Mes notifications ({{nbNonLues}} non lues)</h6>
+            <button class="btn-close" (click)="showNotifications = false"></button>
+          </div>
+
+          <div class="card-body p-0">
+            <div *ngFor="let notif of notifications" class="list-group-item border-0 border-bottom">
+              <div class="d-flex w-100 justify-content-between">
+                <span [ngClass]="'badge bg-'+notif.type+' px-2 py-1 me-2'">
+                  {{notif.titre}}
+                </span>
+                <small *ngIf="!notif.lu" class="text-danger">Nouveau</small>
+              </div>
+
+              <p class="mb-2 small">{{notif.message}}</p>
+
+              <small class="text-muted d-block mb-1">
+                Par {{notif.prof_nom}} • {{notif.classes_noms}} • {{notif.date_creation | date:'short'}}
+              </small>
+
+              <button *ngIf="!notif.lu"
+                      class="btn btn-sm btn-outline-primary"
+                      (click)="marquerLu(notif)">
+                Lu
+              </button>
+            </div>
+
+            <div *ngIf="notifications.length === 0" class="text-center py-4 text-muted">
+              <i class="bi bi-bell-slash fs-3 mb-2"></i>
+              <p class="mb-0">Aucune notification</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

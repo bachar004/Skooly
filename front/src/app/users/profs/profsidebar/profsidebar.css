@@ -1,0 +1,24 @@
+a {
+  cursor: pointer;
+  font-size: 22px;
+  color: black;
+  font-weight: bold;
+}
+
+.par {
+  min-height: 100vh;
+  width: 350px;
+  box-shadow: 5px 5px 5px #d9d9d9;
+  
+}
+
+a.active {
+  background-color: #2E8BC0;
+  color: white;
+}
+
+a:not(.active):hover {
+  background-color: #59aad8;
+  color: white;
+}
+
