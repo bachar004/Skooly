@@ -1,6 +1,6 @@
 # Skooly
 
-Skooly est une application éducative moderne conçue pour faciliter la gestion scolaire et améliorer l’expérience d’apprentissage des élèves, enseignants et parents à travers une plateforme intuitive et intelligente.
+Skooly est une application éducative moderne conçue pour faciliter la gestion scolaire et améliorer l’expérience d’apprentissage des élèves & enseignants .
 
 ---
 
